@@ -2,6 +2,9 @@ import { Outlet } from 'react-router-dom';
 import {
   AppBar,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
   Drawer,
   List,
   ListItem,
@@ -14,7 +17,7 @@ import '../views.css';
 
 const MainLayout = () => {
   return (
-    <div className="flex main-bg h-dvh">
+    <div className="flex main-bg h-dvh overflow-auto">
       <Drawer
         variant="permanent"
         sx={{
@@ -39,8 +42,8 @@ const MainLayout = () => {
           </ListItem>
         </List>
       </Drawer>
-      <div className="relative flex-grow">
-        <AppBar position="absolute" className="p-2 !flex !justify-center">
+      <div className="relative flex-grow pt-20 px-5">
+        <AppBar position="fixed" className="p-2 pl-40 !flex !justify-center">
           <TextField
             placeholder="Search for Issues here"
             variant="outlined"
@@ -59,6 +62,37 @@ const MainLayout = () => {
         </AppBar>
         <Outlet />
       </div>
+      <Dialog open={false} onClose={() => console.log('closing')}>
+        <DialogContent>
+          <h3>Create Post</h3>
+          <TextField
+            autoFocus
+            margin="normal"
+            label="Post Title"
+            fullWidth
+            variant="outlined"
+            type="text"
+          />
+          <TextField
+            autoFocus
+            margin="normal"
+            label="Post Content"
+            fullWidth
+            variant="outlined"
+            type="text"
+            multiline
+            rows={4}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => console.log('close')} color="secondary">
+            Close
+          </Button>
+          <Button onClick={() => console.log('saving')} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
