@@ -19,7 +19,7 @@ function App() {
           </Route>
           <Route path="/" element={<MainLayout />}>
             <Route path="posts" element={<PostCollection />} />
-            <Route path={'post/:id'} element={<PostContainer />} />
+            <Route path="post/:id" element={<PostContainer />} />
           </Route>
         </Route>
       </Routes>
