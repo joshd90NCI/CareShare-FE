@@ -2,9 +2,6 @@ import { Outlet } from 'react-router-dom';
 import {
   AppBar,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
   Drawer,
   List,
   ListItem,
@@ -14,8 +11,12 @@ import {
 } from '@mui/material';
 
 import '../views.css';
+import CreatePostModal from '../../containers/CreatePostModal.tsx';
+import { useContext } from 'react';
+import { modalOpenContext } from '../../contexts/UserContext.tsx';
 
 const MainLayout = () => {
+  const { setModalDetails } = useContext(modalOpenContext);
   return (
     <div className="flex main-bg h-dvh overflow-auto">
       <Drawer
@@ -38,7 +39,9 @@ const MainLayout = () => {
             <ListItemButton>Trending</ListItemButton>
           </ListItem>
           <ListItem>
-            <Button variant="contained">Ask Question</Button>
+            <Button variant="contained" onClick={() => setModalDetails({ openState: true })}>
+              Ask Question
+            </Button>
           </ListItem>
         </List>
       </Drawer>
@@ -62,37 +65,7 @@ const MainLayout = () => {
         </AppBar>
         <Outlet />
       </div>
-      <Dialog open={false} onClose={() => console.log('closing')}>
-        <DialogContent>
-          <h3>Create Post</h3>
-          <TextField
-            autoFocus
-            margin="normal"
-            label="Post Title"
-            fullWidth
-            variant="outlined"
-            type="text"
-          />
-          <TextField
-            autoFocus
-            margin="normal"
-            label="Post Content"
-            fullWidth
-            variant="outlined"
-            type="text"
-            multiline
-            rows={4}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => console.log('close')} color="secondary">
-            Close
-          </Button>
-          <Button onClick={() => console.log('saving')} color="primary">
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <CreatePostModal />
     </div>
   );
 };

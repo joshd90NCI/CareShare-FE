@@ -1,18 +1,27 @@
 import { ExpandLessOutlined, ExpandMoreOutlined } from '@mui/icons-material';
+import { Post } from '../types.ts';
+import { FC } from 'react';
 
-const SinglePost = () => {
+type Props = { post: Post | undefined };
+
+const SinglePost: FC<Props> = ({ post }) => {
+  if (!post) {
+    return null;
+  }
   return (
-    <div className="flex bg-white p-5 bg-opacity-90">
-      <div>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio dolor dolores earum
-        eius et eum facere facilis ipsam natus officiis, perferendis possimus provident quas
-        quibusdam similique, sit ullam velit, voluptas?
+    <div className="flex bg-white p-5 bg-opacity-90 justify-between my-3">
+      <div className="flex flex-col justify-between">
+        <div>{post.body}</div>
+        <div className="flex font-bold gap-2">
+          <p>By: {post.user.fName}</p>
+          <p>{post.user.lName}</p>
+        </div>
       </div>
       <div className="w-8">
         <button className="border-2 border-solid border-stone-500 rounded-full">
           <ExpandLessOutlined />
         </button>
-        <p className="text-center">3</p>
+        <p className="text-center">{post.voteCount ?? 0}</p>
         <button className="border-2 border-solid border-stone-500 rounded-full">
           <ExpandMoreOutlined />
         </button>
