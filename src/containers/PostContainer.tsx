@@ -11,7 +11,7 @@ import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
 const PostContainer = () => {
   const { id } = useParams();
-  const options = useMemo(() => ({}), []);
+  const options = useMemo(() => ({ credentials: 'include' }) as RequestInit, []);
   const { data, error, loading, fetchDataFunction } = useFetch<Post>(
     `${config.apiEndpoint}/posts/${id}`,
     options

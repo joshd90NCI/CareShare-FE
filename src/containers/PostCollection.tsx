@@ -10,7 +10,7 @@ const PostCollection = () => {
     const fetchFunction = async () => {
       const url = `${config.apiEndpoint}/posts`;
       try {
-        const response = await fetch(url);
+        const response = await fetch(url, { credentials: 'include' });
         if (!response.ok) {
           console.log(response.statusText, 'something went wrong');
         }

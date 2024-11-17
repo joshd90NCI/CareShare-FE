@@ -30,6 +30,7 @@ const LoginContainer = () => {
         method: 'POST',
         body: JSON.stringify(inputs),
         headers: { 'Content-type': 'application/json' },
+        credentials: 'include',
       });
       if (!response.ok) {
         console.log('HTTP Error: ', response.statusText);

@@ -20,7 +20,6 @@ const MainLayout = () => {
   const { setModalDetails } = useContext(modalOpenContext);
   const { userDetails } = useContext(userContext);
 
-  console.log(userDetails, 'userDetails');
   return (
     <div className="flex main-bg h-dvh overflow-auto">
       <Drawer

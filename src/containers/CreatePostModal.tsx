@@ -26,6 +26,7 @@ const CreatePostModal = () => {
         body: JSON.stringify(bodyObj),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
+        credentials: 'include',
       });
       if (!response.ok) {
         console.log('There was an Error: ', response.statusText);
@@ -33,6 +34,7 @@ const CreatePostModal = () => {
       const result = await response.json();
       navigate(`/post/${modalDetails.parentId ?? result.id}`);
       setModalDetails({ openState: false });
+      setPostValues({});
     } catch (err) {
       console.log(err);
     }
