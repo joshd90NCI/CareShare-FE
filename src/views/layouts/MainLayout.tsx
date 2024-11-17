@@ -13,10 +13,14 @@ import {
 import '../views.css';
 import CreatePostModal from '../../containers/CreatePostModal.tsx';
 import { useContext } from 'react';
-import { modalOpenContext } from '../../contexts/UserContext.tsx';
+import { modalOpenContext } from '../../contexts/ModalContext.tsx';
+import { userContext } from '../../contexts/UserContext.tsx';
 
 const MainLayout = () => {
   const { setModalDetails } = useContext(modalOpenContext);
+  const { userDetails } = useContext(userContext);
+
+  console.log(userDetails, 'userDetails');
   return (
     <div className="flex main-bg h-dvh overflow-auto">
       <Drawer
@@ -29,6 +33,14 @@ const MainLayout = () => {
       >
         <Toolbar />
         <List>
+          {userDetails && (
+            <p className="text-center bg-green-200 p-3 rounded-lg m-2">
+              Signed in as{' '}
+              <b>
+                {userDetails?.fName} {userDetails?.lName}
+              </b>
+            </p>
+          )}
           <ListItem component="button">
             <ListItemButton>Home</ListItemButton>
           </ListItem>

@@ -7,7 +7,7 @@ import { Post } from '../types.ts';
 import { useContext, useEffect, useMemo } from 'react';
 import { Button } from '@mui/material';
 
-import { modalOpenContext } from '../contexts/UserContext.tsx';
+import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
 const PostContainer = () => {
   const { id } = useParams();

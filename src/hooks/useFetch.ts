@@ -27,7 +27,6 @@ function useFetch<T>(url: string, options: RequestInit = {}) {
           if (Object.keys(result).length === 0) {
             setError('No data found.');
           }
-          console.log(result, 'result');
           setData(result);
         } else {
           setError('Unexpected Response format');

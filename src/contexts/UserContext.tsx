@@ -1,20 +1,17 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from 'react';
+import { User } from '../types.ts';
 
-type ModalDetails = { openState: boolean; parentId?: number };
-
-export const modalOpenContext = createContext<{
-  modalDetails: { openState: boolean; parentId?: number };
-  setModalDetails: Dispatch<SetStateAction<ModalDetails>>;
-}>({ modalDetails: { openState: false }, setModalDetails: () => null });
+export const userContext = createContext<{
+  userDetails: User | null;
+  setUserDetails: Dispatch<SetStateAction<User | null>>;
+}>({ userDetails: null, setUserDetails: () => null });
 
 type Props = { children: ReactNode };
 
-export const ModalOpenContextProvider: FC<Props> = ({ children }) => {
-  const [modalDetails, setModalDetails] = useState({ openState: false });
+export const UserContextProvider: FC<Props> = ({ children }) => {
+  const [userDetails, setUserDetails] = useState<User | null>(null);
 
   return (
-    <modalOpenContext.Provider value={{ modalDetails, setModalDetails }}>
-      {children}
-    </modalOpenContext.Provider>
+    <userContext.Provider value={{ userDetails, setUserDetails }}>{children}</userContext.Provider>
   );
 };

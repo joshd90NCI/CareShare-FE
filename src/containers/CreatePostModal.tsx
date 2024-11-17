@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
 import { ChangeEvent, useContext, useState } from 'react';
-import { modalOpenContext } from '../contexts/UserContext.tsx';
+import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
 import config from '../config.ts';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +31,6 @@ const CreatePostModal = () => {
         console.log('There was an Error: ', response.statusText);
       }
       const result = await response.json();
-      console.log(result);
       navigate(`/post/${modalDetails.parentId ?? result.id}`);
       setModalDetails({ openState: false });
     } catch (err) {
