@@ -26,6 +26,7 @@ const SinglePost: FC<Props> = ({ post }) => {
         method: 'POST',
         body: JSON.stringify(bodyObj),
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
       });
       if (!response.ok) {
         console.log('There was an error with the response: ', response.statusText);
