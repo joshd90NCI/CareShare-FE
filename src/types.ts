@@ -1,3 +1,5 @@
+import { AlertProps } from '@mui/material';
+
 export type User = { id: number; email: string; createdAt: string; fName: string; lName: string };
 
 export type Post = {
@@ -8,4 +10,8 @@ export type Post = {
   createdAt: string;
   user: User;
   replies: Post[];
+};
+
+export type AlertContextType = {
+  showAlert: (message: string, serverity?: AlertProps['severity']) => void;
 };

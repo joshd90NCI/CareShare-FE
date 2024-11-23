@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { getErrorMessageFromStatus } from '../utils.ts';
 
 function useFetch<T>(url: string, options: RequestInit = {}) {
   const [data, setData] = useState<T>();
@@ -14,7 +15,8 @@ function useFetch<T>(url: string, options: RequestInit = {}) {
         const response = await fetch(url, { ...options, signal });
 
         if (!response.ok) {
-          setError(`HTTP error! status: ${response.status}`);
+          const message = getErrorMessageFromStatus(response.status);
+          setError(message);
           return;
         }
         const contentType = response.headers.get('content-type');
@@ -36,7 +38,6 @@ function useFetch<T>(url: string, options: RequestInit = {}) {
           setError('An unexpected error occurred');
           return;
         }
-        console.log(err, 'err');
         if (err.name !== 'AbortError') {
           setError(err.message);
         }

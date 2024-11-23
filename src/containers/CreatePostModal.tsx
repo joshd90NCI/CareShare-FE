@@ -4,11 +4,14 @@ import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
 import config from '../config.ts';
 import { useNavigate } from 'react-router-dom';
+import { AlertContext } from '../contexts/AlertContext.tsx';
+import { getErrorMessageFromStatus } from '../utils.ts';
 
 const CreatePostModal = () => {
   const { modalDetails, setModalDetails } = useContext(modalOpenContext);
   const [postValues, setPostValues] = useState<Record<string, string>>({});
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -29,14 +32,16 @@ const CreatePostModal = () => {
         credentials: 'include',
       });
       if (!response.ok) {
-        console.log('There was an Error: ', response.statusText);
+        const message = getErrorMessageFromStatus(response.status);
+        showAlert(message, 'error');
       }
       const result = await response.json();
       navigate(`/post/${modalDetails.parentId ?? result.id}`);
       setModalDetails({ openState: false });
       setPostValues({});
     } catch (err) {
-      console.log(err);
+      const message = `Something unexpected happened: ${(err as Error).message}`;
+      showAlert(message, 'error');
     }
   };
 

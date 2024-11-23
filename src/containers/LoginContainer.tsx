@@ -5,12 +5,15 @@ import { loginSchema } from '../validations/authFormValidations.ts';
 import config from '../config.ts';
 import { useNavigate } from 'react-router-dom';
 import { userContext } from '../contexts/UserContext.tsx';
+import { getErrorMessageFromStatus } from '../utils.ts';
+import { AlertContext } from '../contexts/AlertContext.tsx';
 
 const LoginContainer = () => {
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [inputErrors, setInputErrors] = useState<Record<string, string>>({});
   const { setUserDetails } = useContext(userContext);
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -19,7 +22,6 @@ const LoginContainer = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(inputs, 'inputs');
     const validationErrors = await validateForm(inputs, loginSchema);
     if (Object.keys(validationErrors).length > 0) {
       setInputErrors(validationErrors);
@@ -33,14 +35,15 @@ const LoginContainer = () => {
         credentials: 'include',
       });
       if (!response.ok) {
-        console.log('HTTP Error: ', response.statusText);
+        const message = getErrorMessageFromStatus(response.status);
+        showAlert(message, 'error');
       }
       const result = await response.json();
-      console.log(result);
       setUserDetails(result.user);
       navigate('/');
     } catch (err) {
-      console.error(err);
+      const message = `An unexpected error occurred: ${(err as Error).message}`;
+      showAlert(message, 'error');
     }
   };
 

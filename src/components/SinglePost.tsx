@@ -1,14 +1,17 @@
 import { ExpandLessOutlined, ExpandMoreOutlined } from '@mui/icons-material';
 import { Post } from '../types.ts';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 
 import config from '../config.ts';
+import { AlertContext } from '../contexts/AlertContext.tsx';
+import { getErrorMessageFromStatus } from '../utils.ts';
 
 type Props = { post: Post | undefined };
 
 const SinglePost: FC<Props> = ({ post }) => {
   const [voteCount, setVoteCount] = useState(post?.voteCount ?? 0);
   const [isLoading, setIsLoading] = useState(false);
+  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (post) {
@@ -29,12 +32,14 @@ const SinglePost: FC<Props> = ({ post }) => {
         credentials: 'include',
       });
       if (!response.ok) {
-        console.log('There was an error with the response: ', response.statusText);
+        const message = getErrorMessageFromStatus(response.status);
+        showAlert(message, 'error');
         return;
       }
       setVoteCount((prev) => prev + voteChangeAmount);
     } catch (err) {
-      console.log(err);
+      const message = `An unexpected error occurred: ${(err as Error).message}`;
+      showAlert(message, 'error');
     } finally {
       setIsLoading(false);
     }

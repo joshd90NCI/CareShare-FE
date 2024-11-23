@@ -8,12 +8,14 @@ import {
   SelectChangeEvent,
   FormHelperText,
 } from '@mui/material';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useContext, useMemo, useState } from 'react';
 import useFetch from '../hooks/useFetch.ts';
 import config from '../config.ts';
 import validateForm from '../validations/validateForm.ts';
 import { registerSchema } from '../validations/authFormValidations.ts';
 import { useNavigate } from 'react-router-dom';
+import { AlertContext } from '../contexts/AlertContext.tsx';
+import { getErrorMessageFromStatus } from '../utils.ts';
 
 const RegisterContainer = () => {
   const [inputs, setInputs] = useState<Record<string, string>>({});
@@ -21,6 +23,7 @@ const RegisterContainer = () => {
   const options = useMemo(() => ({}), []);
   const { data: organisations } = useFetch(`${config.apiEndpoint}/organisations`, options);
   const navigate = useNavigate();
+  const { showAlert } = useContext(AlertContext);
 
   const handleChange = (e: ChangeEvent<any> | SelectChangeEvent) => {
     const { id, value, name } = e.target;
@@ -41,12 +44,14 @@ const RegisterContainer = () => {
         headers: { 'Content-type': 'application/json' },
       });
       if (!response.ok) {
-        console.log('HTTP error: ', response.statusText);
+        const message = getErrorMessageFromStatus(response.status);
+        showAlert(message, 'error');
         return;
       }
       navigate('/login');
     } catch (err) {
-      console.log(err);
+      const message = `Something unexpected happened: ${(err as Error).message}`;
+      showAlert(message, 'error');
     }
   };
 
