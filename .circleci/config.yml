@@ -7,7 +7,7 @@ executors:
 
   docker-executor:
     docker:
-      - image: circleci/docker:stable
+      - image: cimg/base:stable
 
   python-executor:
     docker:
