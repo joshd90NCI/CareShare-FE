@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: circleci/node:18
+      - image: cimg/node:23.3.0
 
   docker-executor:
     docker:
@@ -11,13 +11,11 @@ executors:
 
   python-executor:
     docker:
-      - image: circleci/python:3.9
+      - image: cimg/python:3.13.0
 
 jobs:
   build:
     executor: node-executor
-    docker:
-      - image: circleci/node:18
     steps:
       - checkout
       - run:
@@ -33,8 +31,6 @@ jobs:
 
   dockerize:
     executor: docker-executor
-    docker:
-      - image: circleci/docker:stable
     steps:
       - checkout
       - attach_workspace:
@@ -48,8 +44,6 @@ jobs:
 
   deploy:
     executor: python-executor
-    docker:
-      - image: circleci/python:3.9  # Lightweight image for SSH
     steps:
       - run:
           name: Deploy to VPS
