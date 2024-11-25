@@ -1,0 +1,74 @@
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:18
+
+  docker-executor:
+    docker:
+      - image: circleci/docker:stable
+
+  python-executor:
+    docker:
+      - image: circleci/python:3.9
+
+jobs:
+  build:
+    executor: node-executor
+    docker:
+      - image: circleci/node:18
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build the app
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./dist
+
+  dockerize:
+    executor: docker-executor
+    docker:
+      - image: circleci/docker:stable
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} .
+            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            docker push $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
+
+  deploy:
+    executor: python-executor
+    docker:
+      - image: circleci/python:3.9  # Lightweight image for SSH
+    steps:
+      - run:
+          name: Deploy to VPS
+          command: |
+            ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "
+            docker pull $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} &&
+            docker stop care_share_fe_container || true &&
+            docker rm care_share_fe_container || true &&
+            docker run -d --name care_share_fe_container -p 80:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
+            "
+
+workflows:
+  version: 2
+  deploy-workflow:
+    jobs:
+      - build
+      - dockerize:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - dockerize

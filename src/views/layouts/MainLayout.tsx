@@ -42,13 +42,13 @@ const MainLayout = () => {
               </p>
             )}
             <ListItem component="button">
-              <ListItemButton>Home</ListItemButton>
+              <ListItemButton onClick={() => navigate('/')}>Home</ListItemButton>
             </ListItem>
             <ListItem>
               <ListItemButton>Profile</ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton>Trending</ListItemButton>
+              <ListItemButton onClick={() => navigate('/posts/trending')}>Trending</ListItemButton>
             </ListItem>
             <ListItem>
               <Button variant="contained" onClick={() => setModalDetails({ openState: true })}>

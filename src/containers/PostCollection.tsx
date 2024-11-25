@@ -27,8 +27,7 @@ const PostCollection = () => {
           return;
         }
         const data = await response.json();
-        setPosts(data.content);
-        console.log(data);
+        setPosts(data);
       } catch (err) {
         const message = `Something unexpected happened: ${(err as Error).message}`;
         showAlert(message, 'error');
@@ -37,7 +36,7 @@ const PostCollection = () => {
 
     fetchFunction().then();
   }, [type, showAlert]);
-
+  console.log(posts, 'posts');
   return (
     <div className="bg-green-50 bg-opacity-50 p-2">
       {posts.map((post) => (
