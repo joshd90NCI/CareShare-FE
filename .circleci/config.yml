@@ -53,7 +53,7 @@ jobs:
             docker pull $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} &&
             docker stop care_share_fe_container || true &&
             docker rm care_share_fe_container || true &&
-            docker run -d --name care_share_fe_container -p 80:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
+            docker run -d --name care_share_fe_container -p 81:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
             "
 
 workflows:
