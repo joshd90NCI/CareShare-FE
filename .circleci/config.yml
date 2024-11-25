@@ -27,7 +27,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./build
+            - ./dist
 
   dockerize:
     executor: docker-executor
