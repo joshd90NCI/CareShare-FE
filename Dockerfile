@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copy the build output from the builder stage to the NGINX html directory
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY /app/build /usr/share/nginx/html
 
 # Copy the custom NGINX configuration file
 COPY nginx.conf /etc/nginx/conf.d/default.conf
