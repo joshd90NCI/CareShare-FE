@@ -1,3 +1,4 @@
 const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+const EXPIRY_TIME_IN_SECONDS = 5 * 60 * 60;
 
-export default { apiEndpoint };
+export default { apiEndpoint, EXPIRY_TIME_IN_SECONDS };

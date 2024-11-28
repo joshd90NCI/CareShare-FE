@@ -45,7 +45,7 @@ const MainLayout = () => {
               <ListItemButton onClick={() => navigate('/')}>Home</ListItemButton>
             </ListItem>
             <ListItem>
-              <ListItemButton>Profile</ListItemButton>
+              <ListItemButton onClick={() => navigate('/profile')}>Profile</ListItemButton>
             </ListItem>
             <ListItem>
               <ListItemButton onClick={() => navigate('/posts/trending')}>Trending</ListItemButton>

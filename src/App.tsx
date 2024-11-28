@@ -13,6 +13,7 @@ import { UserContextProvider } from './contexts/UserContext.tsx';
 import './App.css';
 import SearchResults from './containers/SearchResults.tsx';
 import { AlertProvider } from './contexts/AlertContext.tsx';
+import ProfileContainer from './containers/ProfileContainer.tsx';
 
 function App() {
   return (
@@ -27,9 +28,11 @@ function App() {
                   <Route path="login" element={<LoginContainer />} />
                 </Route>
                 <Route path="/" element={<MainLayout />}>
+                  <Route index element={<PostCollection passedType="recent" />} />
                   <Route path="search" element={<SearchResults />} />
                   <Route path="posts/:type" element={<PostCollection />} />
                   <Route path="post/:id" element={<PostContainer />} />
+                  <Route path="profile" element={<ProfileContainer />} />
                 </Route>
               </Route>
             </Routes>

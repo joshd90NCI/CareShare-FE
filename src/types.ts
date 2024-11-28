@@ -1,6 +1,13 @@
 import { AlertProps } from '@mui/material';
 
-export type User = { id: number; email: string; createdAt: string; fName: string; lName: string };
+export type User = {
+  id: number;
+  email: string;
+  createdAt: string;
+  fName: string;
+  lName: string;
+  profileUrl?: string;
+};
 
 export type Post = {
   id: number;
@@ -10,6 +17,7 @@ export type Post = {
   createdAt: string;
   user: User;
   replies: Post[];
+  tokenCreatedAt?: number;
 };
 
 export type AlertContextType = {

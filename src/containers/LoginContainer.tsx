@@ -39,6 +39,9 @@ const LoginContainer = () => {
         showAlert(message, 'error');
       }
       const result = await response.json();
+      if (result.user) {
+        result.user.tokenCreatedAt = Date.now();
+      }
       setUserDetails(result.user);
       navigate('/');
     } catch (err) {

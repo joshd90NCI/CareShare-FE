@@ -1,5 +1,6 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { User } from '../types.ts';
+import config from '../config.ts';
 
 export const userContext = createContext<{
   userDetails: User | null;
@@ -10,15 +11,25 @@ type Props = { children: ReactNode };
 
 export const UserContextProvider: FC<Props> = ({ children }) => {
   const [userDetails, setUserDetails] = useState<User | null>(() => {
-    const storedUser = localStorage.getItem('userDetails');
-    return storedUser ? JSON.parse(storedUser) : null;
+    const storedUser = sessionStorage.getItem('userDetails');
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      console.log(parsedUser);
+      if (!('createdAt' in parsedUser)) {
+        return parsedUser;
+      }
+      const timeDiff = Date.now() - parsedUser.createdAt;
+      console.log(timeDiff, 'time diff');
+      return timeDiff > config.EXPIRY_TIME_IN_SECONDS * 1000 ? null : parsedUser;
+    }
+    return null;
   });
 
   useEffect(() => {
     if (userDetails) {
-      localStorage.setItem('userDetails', JSON.stringify(userDetails));
+      sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
     } else {
-      localStorage.removeItem('userDetails');
+      sessionStorage.removeItem('userDetails');
     }
   }, [userDetails]);
 
