@@ -7,6 +7,7 @@ export type User = {
   fName: string;
   lName: string;
   profileUrl?: string;
+  roles?: string[];
 };
 
 export type Post = {

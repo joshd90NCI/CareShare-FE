@@ -38,7 +38,7 @@ const SearchResults = () => {
   }, [search, showAlert]);
 
   return (
-    <div className="bg-green-50 bg-opacity-50 p-2">
+    <div className="bg-green-50 bg-opacity-50 p-10">
       {posts.map((post) => (
         <PostInCollection post={post} key={post.createdAt} />
       ))}

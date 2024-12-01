@@ -14,6 +14,7 @@ import './App.css';
 import SearchResults from './containers/SearchResults.tsx';
 import { AlertProvider } from './contexts/AlertContext.tsx';
 import ProfileContainer from './containers/ProfileContainer.tsx';
+import AdminPage from './views/AdminPage.tsx';
 
 function App() {
   return (
@@ -33,6 +34,9 @@ function App() {
                   <Route path="posts/:type" element={<PostCollection />} />
                   <Route path="post/:id" element={<PostContainer />} />
                   <Route path="profile" element={<ProfileContainer />} />
+                  <Route path="/admin">
+                    <Route index element={<AdminPage />} />
+                  </Route>
                 </Route>
               </Route>
             </Routes>
