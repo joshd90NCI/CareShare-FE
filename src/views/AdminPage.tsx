@@ -29,7 +29,7 @@ const AdminPage = () => {
           <Typography>Approve Users</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <UserCollection role={'BASIC'} />
+          <UserCollection />
         </AccordionDetails>
       </Accordion>
       <Accordion>
