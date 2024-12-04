@@ -7,9 +7,13 @@ import { useParams } from 'react-router-dom';
 import { AlertContext } from '../contexts/AlertContext.tsx';
 import { getErrorMessageFromStatus } from '../utils.ts';
 
-type Props = { userId?: number; passedType?: 'trending' | 'recent' | 'userPosts' };
+type Props = {
+  userId?: number;
+  passedType?: 'trending' | 'recent' | 'userPosts' | 'organisation';
+  organisationId?: number;
+};
 
-const PostCollection: FC<Props> = ({ userId, passedType }) => {
+const PostCollection: FC<Props> = ({ userId, passedType, organisationId = 0 }) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const { type } = useParams();
   const { showAlert } = useContext(AlertContext);
@@ -19,6 +23,7 @@ const PostCollection: FC<Props> = ({ userId, passedType }) => {
       trending: `${config.apiEndpoint}/posts/trending`,
       recent: `${config.apiEndpoint}/posts/recent?pageNumber=0&pageSize=10`,
       userPosts: `${config.apiEndpoint}/posts/user/${userId}`,
+      organisation: `${config.apiEndpoint}/posts/organisation/${organisationId}`,
     };
     const typeToUse = userId ? 'userPosts' : (passedType ?? type);
     const url = urlObj[typeToUse ?? ''];
@@ -42,7 +47,7 @@ const PostCollection: FC<Props> = ({ userId, passedType }) => {
     };
 
     fetchFunction().then();
-  }, [type, showAlert, passedType, userId]);
+  }, [type, showAlert, passedType, userId, organisationId]);
   console.log(posts, 'posts');
   return (
     <div className="bg-green-50 bg-opacity-50 p-10">

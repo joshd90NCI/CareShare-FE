@@ -41,14 +41,10 @@ const MainLayout = () => {
                 </b>
               </p>
             )}
-            {userDetails?.roles?.includes('ADMIN') && (
+            {(userDetails?.roles?.includes('ADMIN') ||
+              userDetails?.roles?.includes('MODERATOR')) && (
               <ListItem>
                 <ListItemButton onClick={() => navigate('/admin')}>Admin</ListItemButton>
-              </ListItem>
-            )}
-            {userDetails?.roles?.includes('MODERATOR') && (
-              <ListItem>
-                <ListItemButton onClick={() => navigate('/moderator')}>Admin</ListItemButton>
               </ListItem>
             )}
             <ListItem component="button">
