@@ -76,7 +76,7 @@ const LoginContainer = () => {
         helperText={inputErrors['password']}
       />
       <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Submit
+        Login
       </Button>
     </div>
   );
