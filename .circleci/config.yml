@@ -32,7 +32,7 @@ jobs:
   dockerize:
     executor: docker-executor
     environment:
-      VITE_API_URL: ${VITE_API_URL}
+      VITE_API_URL: http://${VPS_HOST}:8080/api
     steps:
       - checkout
       - attach_workspace:
