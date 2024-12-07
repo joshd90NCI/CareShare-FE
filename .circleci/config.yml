@@ -31,6 +31,8 @@ jobs:
 
   dockerize:
     executor: docker-executor
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
     steps:
       - checkout
       - attach_workspace:
@@ -54,7 +56,7 @@ jobs:
             docker stop care_share_fe_container || true &&
             docker rm care_share_fe_container || true &&
             docker rmi $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} || true &&
-            docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
+            docker network inspect caresharebe_app-network >/dev/null 2>&1 || docker network create caresharebe_app-network
             docker run -d --name care_share_fe_container --network app-network -p 81:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
             "
 
