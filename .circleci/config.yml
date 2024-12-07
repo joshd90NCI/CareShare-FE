@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            docker build --build-arg VITE_API_URL=$VITE_API_URL -t $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} .
+            docker build --build-arg VITE_API_URL=http://141.136.42.206/8080/api -t $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} .
             echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
             docker push $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
 
