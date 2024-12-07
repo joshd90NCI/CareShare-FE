@@ -54,7 +54,8 @@ jobs:
             docker stop care_share_fe_container || true &&
             docker rm care_share_fe_container || true &&
             docker rmi $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} || true &&
-            docker run -d --name care_share_fe_container -p 81:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
+            docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
+            docker run -d --name care_share_fe_container --network app-network -p 81:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
             "
 
 workflows:
