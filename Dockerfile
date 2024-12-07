@@ -1,6 +1,10 @@
 # Final Container: Serve the app with NGINX
 FROM nginx:alpine
 
+ARG VITE_API_URL
+RUN echo "Building with VITE_API_URL=$VITE_API_URL"
+
+
 # Copy the build output from the builder stage to the NGINX html directory
 COPY /dist /usr/share/nginx/html
 
