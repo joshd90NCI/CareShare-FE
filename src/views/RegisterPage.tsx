@@ -57,7 +57,7 @@ const RegisterPage = () => {
 
   return (
     <div className="w-80 border-2 border-solid border-stone-400 rounded-lg p-5 bg-white">
-      <h1 className="text-center font-bold">Register</h1>
+      <h1 className="text-center font-bold">Register NOW</h1>
       <TextField
         label="First Name"
         variant="outlined"
