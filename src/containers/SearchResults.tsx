@@ -12,6 +12,9 @@ const SearchResults = () => {
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
+    if (search.length < 2) {
+      return;
+    }
     const fetchSearch = async () => {
       // we need to make sure that spaces etc. don't mess up our query
       const encodedSearch = encodeURIComponent(search);

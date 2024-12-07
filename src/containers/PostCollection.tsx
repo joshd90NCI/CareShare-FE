@@ -48,7 +48,7 @@ const PostCollection: FC<Props> = ({ userId, passedType, organisationId = 0 }) =
 
     fetchFunction().then();
   }, [type, showAlert, passedType, userId, organisationId]);
-  console.log(posts, 'posts');
+
   return (
     <div className="bg-green-50 bg-opacity-50 p-10">
       {posts.map((post) => (

@@ -15,6 +15,7 @@ import SearchResults from './containers/SearchResults.tsx';
 import { AlertProvider } from './contexts/AlertContext.tsx';
 import ProfilePage from './views/ProfilePage.tsx';
 import AdminPage from './views/AdminPage.tsx';
+import LandingPage from './views/LandingPage.tsx';
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
                   <Route path="login" element={<LoginPage />} />
                 </Route>
                 <Route path="/" element={<MainLayout />}>
-                  <Route index element={<PostCollection passedType="recent" />} />
+                  <Route index element={<LandingPage />} />
                   <Route path="search" element={<SearchResults />} />
                   <Route path="posts/:type" element={<PostCollection />} />
                   <Route path="post/:id" element={<PostContainer />} />

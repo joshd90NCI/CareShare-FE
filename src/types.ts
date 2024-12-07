@@ -9,6 +9,7 @@ export type User = {
   profileUrl?: string;
   roles?: string[];
   organisationId?: number;
+  organisation?: { id: number };
 };
 
 export type Post = {

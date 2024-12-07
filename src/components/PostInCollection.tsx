@@ -11,7 +11,7 @@ const PostInCollection: FC<Props> = ({ post }) => {
   return (
     <div
       className="bg-white my-3 p-3 flex items-center justify-between cursor-pointer hover:scale-105 transition-transform"
-      onClick={() => navigate(`/post/${post.id}`)}
+      onClick={() => navigate(`/post/${post.parentId ? post.parentId : post.id}`)}
       data-testid="post-in-collection"
     >
       <div>

@@ -25,14 +25,14 @@ const SinglePost: FC<Props> = ({ post }) => {
     }
   }, [post]);
 
-  const determineCanEdit = () => {
+  const determineCanEdit = (): boolean | 'self' => {
+    // Start with the most specific first.  Only owner of a post can edit their own
+    if (userDetails?.id === post?.user.id) return 'self';
     if (userDetails?.roles?.includes('ADMIN')) return true;
-    if (
-      userDetails?.roles?.includes('MODERATOR') &&
-      userDetails?.organisationId === post?.user.organisationId
-    )
-      return true;
-    return userDetails?.id === post?.user.id;
+    return (
+      !!userDetails?.roles?.includes('MODERATOR') &&
+      userDetails?.organisationId === post?.user.organisation?.id
+    );
   };
 
   const handleDelete = async () => {
@@ -77,7 +77,9 @@ const SinglePost: FC<Props> = ({ post }) => {
       setIsLoading(false);
     }
   };
-
+  if (post?.user.fName === 'Benny') {
+    console.log(determineCanEdit());
+  }
   if (!post) {
     return null;
   }
@@ -93,9 +95,11 @@ const SinglePost: FC<Props> = ({ post }) => {
       <div className="flex gap-3">
         {determineCanEdit() && (
           <div className="flex flex-col justify-between p-1">
-            <button onClick={handleEdit} data-testid="edit-button">
-              <Edit className="text-green-900 hover:text-green-800 cursor-pointer" />
-            </button>
+            {determineCanEdit() === 'self' && (
+              <button onClick={handleEdit} data-testid="edit-button">
+                <Edit className="text-green-900 hover:text-green-800 cursor-pointer" />
+              </button>
+            )}
             <button onClick={handleDelete} data-testid="delete-button">
               <Delete className="text-red-800 hover:text-red-700 cursor-pointer" />
             </button>
