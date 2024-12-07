@@ -1,9 +1,10 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from 'react';
+import { Post } from '../types.ts';
 
-type ModalDetails = { openState: boolean; parentId?: number };
+type ModalDetails = { openState: boolean; parentId?: number | null; postDetails?: Post };
 
 export const modalOpenContext = createContext<{
-  modalDetails: { openState: boolean; parentId?: number };
+  modalDetails: ModalDetails;
   setModalDetails: Dispatch<SetStateAction<ModalDetails>>;
 }>({ modalDetails: { openState: false }, setModalDetails: () => null });
 

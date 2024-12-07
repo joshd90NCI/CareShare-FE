@@ -1,23 +1,56 @@
-import { ExpandLessOutlined, ExpandMoreOutlined } from '@mui/icons-material';
+import { ExpandLessOutlined, ExpandMoreOutlined, Edit, Delete } from '@mui/icons-material';
 import { Post } from '../types.ts';
 import { FC, useContext, useEffect, useState } from 'react';
 
 import config from '../config.ts';
 import { AlertContext } from '../contexts/AlertContext.tsx';
-import { getErrorMessageFromStatus } from '../utils.ts';
+import { genericFetch, getErrorMessageFromStatus } from '../utils.ts';
+import { userContext } from '../contexts/UserContext.tsx';
+import { useNavigate } from 'react-router-dom';
+import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
 type Props = { post: Post | undefined };
 
 const SinglePost: FC<Props> = ({ post }) => {
   const [voteCount, setVoteCount] = useState(post?.voteCount ?? 0);
   const [isLoading, setIsLoading] = useState(false);
+  const { setModalDetails } = useContext(modalOpenContext);
   const { showAlert } = useContext(AlertContext);
+  const { userDetails } = useContext(userContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (post) {
       setVoteCount(post?.voteCount);
     }
   }, [post]);
+
+  const determineCanEdit = () => {
+    if (userDetails?.roles?.includes('ADMIN')) return true;
+    if (
+      userDetails?.roles?.includes('MODERATOR') &&
+      userDetails?.organisationId === post?.user.organisationId
+    )
+      return true;
+    return userDetails?.id === post?.user.id;
+  };
+
+  const handleDelete = async () => {
+    const result = await genericFetch(
+      `/posts/${post?.id}`,
+      { method: 'DELETE' },
+      showAlert,
+      'Post was successfully deleted'
+    );
+    if (result) {
+      navigate('/');
+    }
+  };
+
+  const handleEdit = () => {
+    setModalDetails({ openState: true, parentId: post?.parentId, postDetails: post });
+  };
+
   const handleVote = async (voteChangeAmount: 1 | -1) => {
     if (!post || isLoading) {
       return;
@@ -57,20 +90,36 @@ const SinglePost: FC<Props> = ({ post }) => {
           <p>{post.user.lName}</p>
         </div>
       </div>
-      <div className="w-8">
-        <button
-          className="border-2 border-solid border-stone-500 rounded-full"
-          onClick={() => handleVote(1)}
-        >
-          <ExpandLessOutlined />
-        </button>
-        <p className="text-center">{voteCount}</p>
-        <button
-          className="border-2 border-solid border-stone-500 rounded-full"
-          onClick={() => handleVote(-1)}
-        >
-          <ExpandMoreOutlined />
-        </button>
+      <div className="flex gap-3">
+        {determineCanEdit() && (
+          <div className="flex flex-col justify-between p-1">
+            <button onClick={handleEdit} data-testid="edit-button">
+              <Edit className="text-green-900 hover:text-green-800 cursor-pointer" />
+            </button>
+            <button onClick={handleDelete} data-testid="delete-button">
+              <Delete className="text-red-800 hover:text-red-700 cursor-pointer" />
+            </button>
+          </div>
+        )}
+        <div className="flex flex-col items-center text-xl">
+          <button
+            className="border-2 border-solid border-stone-500 rounded-full m-auto w-10 h-10 flex items-center justify-center"
+            onClick={() => handleVote(1)}
+            data-testid="upvote-button"
+          >
+            <ExpandLessOutlined />
+          </button>
+          <p className="text-center my-3" data-testid="vote-count">
+            {voteCount}
+          </p>
+          <button
+            className="border-2 border-solid border-stone-500 rounded-full m-auto w-10 h-10 flex items-center justify-center"
+            onClick={() => handleVote(-1)}
+            data-testid="downvote-button"
+          >
+            <ExpandMoreOutlined />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -19,7 +19,6 @@ export const UserContextProvider: FC<Props> = ({ children }) => {
         return parsedUser;
       }
       const timeDiff = Date.now() - parsedUser.createdAt;
-      console.log(timeDiff, 'time diff');
       return timeDiff > config.EXPIRY_TIME_IN_SECONDS * 1000 ? null : parsedUser;
     }
     return null;

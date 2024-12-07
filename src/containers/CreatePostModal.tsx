@@ -1,11 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, TextField } from '@mui/material';
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
-import config from '../config.ts';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../contexts/AlertContext.tsx';
-import { getErrorMessageFromStatus } from '../utils.ts';
+import { genericFetch } from '../utils.ts';
 
 const CreatePostModal = () => {
   const { modalDetails, setModalDetails } = useContext(modalOpenContext);
@@ -13,42 +12,47 @@ const CreatePostModal = () => {
   const navigate = useNavigate();
   const { showAlert } = useContext(AlertContext);
 
+  useEffect(() => {
+    if (modalDetails.postDetails) {
+      setPostValues({
+        ['title']: modalDetails.postDetails.title,
+        ['body']: modalDetails.postDetails.body,
+      });
+    }
+  }, [modalDetails.postDetails]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setPostValues((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async () => {
-    const url = `${config.apiEndpoint}/posts`;
-    const bodyObj = modalDetails.parentId
-      ? { ...postValues, parentId: modalDetails.parentId, userId: 1 }
-      : { ...postValues, userId: 1 };
+    const url = modalDetails.postDetails ? `/posts/${modalDetails.postDetails.id}` : `/posts`;
+    const method = modalDetails.postDetails ? 'PUT' : 'POST';
+    const successMessage = modalDetails.postDetails
+      ? 'Successfully updated the post'
+      : 'Successfully created the post';
+    let bodyObj;
+    if (modalDetails.postDetails) {
+      bodyObj = JSON.stringify(postValues);
+    } else {
+      bodyObj = modalDetails.parentId
+        ? JSON.stringify({ ...postValues, parentId: modalDetails.parentId, userId: 1 })
+        : JSON.stringify({ ...postValues, userId: 1 });
+    }
 
-    try {
-      const response = await fetch(url, {
-        body: JSON.stringify(bodyObj),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const message = getErrorMessageFromStatus(response.status);
-        showAlert(message, 'error');
-      }
-      const result = await response.json();
-      navigate(`/post/${modalDetails.parentId ?? result.id}`);
+    const response = await genericFetch(url, { body: bodyObj, method }, showAlert, successMessage);
+    if (response) {
       setModalDetails({ openState: false });
       setPostValues({});
-    } catch (err) {
-      const message = `Something unexpected happened: ${(err as Error).message}`;
-      showAlert(message, 'error');
+      navigate(`/post/${modalDetails.parentId ?? response.id}`);
     }
   };
 
   return (
     <Dialog open={modalDetails.openState} onClose={() => console.log('closing')}>
       <DialogContent>
-        <h3>Create Post</h3>
+        <h3>{modalDetails.postDetails ? 'Edit' : 'Create'} Post</h3>
         <TextField
           autoFocus
           margin="normal"

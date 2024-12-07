@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../contexts/AlertContext.tsx';
 import { getErrorMessageFromStatus } from '../utils.ts';
 
-const RegisterContainer = () => {
+const RegisterPage = () => {
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [inputErrors, setInputErrors] = useState<Record<string, string>>({});
   const options = useMemo(() => ({}), []);
@@ -148,4 +148,4 @@ const RegisterContainer = () => {
   );
 };
 
-export default RegisterContainer;
+export default RegisterPage;

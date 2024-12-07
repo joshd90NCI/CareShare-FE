@@ -8,6 +8,7 @@ export type User = {
   lName: string;
   profileUrl?: string;
   roles?: string[];
+  organisationId?: number;
 };
 
 export type Post = {
@@ -19,6 +20,7 @@ export type Post = {
   user: User;
   replies: Post[];
   tokenCreatedAt?: number;
+  parentId?: number | null;
 };
 
 export type AlertContextType = {

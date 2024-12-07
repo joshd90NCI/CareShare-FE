@@ -20,3 +20,16 @@ describe('Login Page', () => {
     cy.contains('Signed in as');
   });
 });
+
+export const login = (userRole: 'ADMIN' | 'BASIC') => {
+  const username = userRole === 'ADMIN' ? Cypress.env('username') : Cypress.env('basicUsername');
+  const password = Cypress.env('password');
+
+  cy.visit('http://localhost:5173/login');
+  cy.get('#email').type(username);
+  cy.get('#password').type(password);
+  cy.contains('Login').click();
+
+  // Validate successful login
+  cy.url().should('eq', 'http://localhost:5173/');
+};

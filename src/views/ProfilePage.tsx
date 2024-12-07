@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { userContext } from '../contexts/UserContext.tsx';
 import ProfilePicture from '../components/ProfilePicture.tsx';
-import PostCollection from './PostCollection.tsx';
+import PostCollection from '../containers/PostCollection.tsx';
 
-const ProfileContainer = () => {
+const ProfilePage = () => {
   const { userDetails } = useContext(userContext);
   if (!userDetails) {
     return null;
@@ -42,4 +42,4 @@ const ProfileContainer = () => {
   );
 };
 
-export default ProfileContainer;
+export default ProfilePage;

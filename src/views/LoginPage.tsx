@@ -8,7 +8,7 @@ import { userContext } from '../contexts/UserContext.tsx';
 import { getErrorMessageFromStatus } from '../utils.ts';
 import { AlertContext } from '../contexts/AlertContext.tsx';
 
-const LoginContainer = () => {
+const LoginPage = () => {
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [inputErrors, setInputErrors] = useState<Record<string, string>>({});
   const { setUserDetails } = useContext(userContext);
@@ -82,4 +82,4 @@ const LoginContainer = () => {
   );
 };
 
-export default LoginContainer;
+export default LoginPage;

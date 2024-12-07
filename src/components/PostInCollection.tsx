@@ -12,6 +12,7 @@ const PostInCollection: FC<Props> = ({ post }) => {
     <div
       className="bg-white my-3 p-3 flex items-center justify-between cursor-pointer hover:scale-105 transition-transform"
       onClick={() => navigate(`/post/${post.id}`)}
+      data-testid="post-in-collection"
     >
       <div>
         <p className="font-bold">{post.title}</p>
@@ -19,7 +20,7 @@ const PostInCollection: FC<Props> = ({ post }) => {
       </div>
       <div>
         <ThumbUpIcon color="primary" />
-        <p>{post.voteCount}</p>
+        <p data-testid="vote-count">{post.voteCount}</p>
       </div>
     </div>
   );
