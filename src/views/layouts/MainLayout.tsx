@@ -24,7 +24,13 @@ const MainLayout = () => {
       <div className="flex main-bg h-dvh overflow-auto">
         <SideBar />
         <div className="relative flex-grow pt-20 px-5">
-          <AppBar position="fixed" className="p-2 sm:pl-40 !flex !justify-center">
+          <AppBar
+            position="fixed"
+            className="p-2 sm:pl-40 !flex !justify-center"
+            sx={{
+              backgroundColor: 'secondary.main',
+            }}
+          >
             <SearchBar />
           </AppBar>
           <Outlet />

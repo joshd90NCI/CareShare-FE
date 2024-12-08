@@ -91,7 +91,7 @@ const CreatePostModal = () => {
         <Button onClick={() => setModalDetails({ openState: false })} color="secondary">
           Close
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color="primary" variant="contained">
           Submit
         </Button>
       </DialogActions>

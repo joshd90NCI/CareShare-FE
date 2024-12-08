@@ -14,7 +14,7 @@ const SideNavList = () => {
   return (
     <List>
       {userDetails && (
-        <p className="text-center bg-green-200 p-3 rounded-lg m-2">
+        <p className="text-center bg-bone bg-opacity-70 p-3 rounded-lg m-2">
           Signed in as{' '}
           <b>
             {userDetails?.fName} {userDetails?.lName}
