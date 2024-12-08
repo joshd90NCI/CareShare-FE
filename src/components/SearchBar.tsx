@@ -30,14 +30,17 @@ const SearchBar = () => {
         variant="outlined"
         type="search"
         size="small"
-        className="rounded-md"
+        className="rounded-md min-w-24"
         onChange={debouncedSearch}
         onFocus={() => navigate('/search')}
         sx={{
           backgroundColor: 'white',
-          width: '.33',
+          width: '33%',
           maxWidth: '48rem',
-          minWidth: '24rem',
+          minWidth: {
+            xs: '90vw',
+            sm: '24rem',
+          },
           zIndex: 1,
         }}
       />
