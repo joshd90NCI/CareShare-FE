@@ -55,20 +55,6 @@ jobs:
             docker rm care_share_fe_container || true &&
             docker rmi $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1} || true &&
             docker run -d --name care_share_fe_container -p 81:80 $DOCKERHUB_USERNAME/care_share_fe:${CIRCLE_SHA1}
-  
-            # Install Certbot if not installed
-            if ! [ -x \"\$(command -v certbot)\" ]; then
-              sudo apt update &&
-              sudo apt install -y certbot python3-certbot-nginx;
-            fi &&
-  
-            # Obtain certificate without modifying Nginx config
-            sudo certbot certonly --nginx --non-interactive --agree-tos \
-              --email joshuadancey@hotmail.com \
-              -d careshare.joshuadanceywebdev.ie
-  
-            # Reload Nginx
-            sudo systemctl reload nginx
             "
 
 workflows:
