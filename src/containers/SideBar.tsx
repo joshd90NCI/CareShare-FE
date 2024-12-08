@@ -1,16 +1,23 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, Drawer, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import SideNavList from './SideNavList.tsx';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { ChevronLeft } from '@mui/icons-material';
 
+import { userContext } from '../contexts/UserContext.tsx';
+
 const SideBar = () => {
   const [openForMobile, setOpenForMobile] = useState(false);
+  const { setUserDetails } = useContext(userContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerToggle = () => {
     setOpenForMobile((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    setUserDetails(null);
   };
 
   return (
@@ -40,6 +47,20 @@ const SideBar = () => {
           }}
         >
           <SideNavList />
+          <div className="w-full px-3">
+            <Button
+              variant="contained"
+              onClick={handleLogout}
+              sx={{
+                backgroundColor: 'secondary.main',
+                position: 'absolute',
+                bottom: '1rem',
+                width: '90%',
+              }}
+            >
+              Logout
+            </Button>
+          </div>
         </Drawer>
       )}
 
@@ -59,6 +80,20 @@ const SideBar = () => {
           <ChevronLeft fontSize="inherit" />
         </div>
         <SideNavList />
+        <div className="w-full px-3">
+          <Button
+            variant="contained"
+            onClick={handleLogout}
+            sx={{
+              backgroundColor: 'secondary.main',
+              position: 'absolute',
+              bottom: '1rem',
+              width: '90%',
+            }}
+          >
+            Logout
+          </Button>
+        </div>
       </Drawer>
     </div>
   );

@@ -14,7 +14,6 @@ export const UserContextProvider: FC<Props> = ({ children }) => {
     const storedUser = sessionStorage.getItem('userDetails');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      console.log(parsedUser);
       if (!('createdAt' in parsedUser)) {
         return parsedUser;
       }
