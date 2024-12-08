@@ -48,6 +48,9 @@ const RegisterPage = () => {
         showAlert(message, 'error');
         return;
       }
+      showAlert(
+        'You will not be able to login until your organisations moderator has approved your account'
+      );
       navigate('/login');
     } catch (err) {
       const message = `Something unexpected happened: ${(err as Error).message}`;
@@ -56,93 +59,103 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="w-80 border-2 border-solid border-stone-400 rounded-lg p-5 bg-white">
-      <h1 className="text-center font-bold">Register NOW</h1>
-      <TextField
-        label="First Name"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="text"
-        onChange={handleChange}
-        value={inputs['fName'] ?? ''}
-        id="fName"
-        error={!!inputErrors['fName']}
-        helperText={inputErrors['fName']}
-      />
-      <TextField
-        label="Last Name"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="text"
-        onChange={handleChange}
-        value={inputs['lName'] ?? ''}
-        id="lName"
-        error={!!inputErrors['lName']}
-        helperText={inputErrors['lName']}
-      />
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="email"
-        placeholder="This will be your username"
-        id="email"
-        onChange={handleChange}
-        value={inputs['email'] ?? ''}
-        error={!!inputErrors['email']}
-        helperText={inputErrors['email']}
-      />
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="my-select-label">Choose an Organisation</InputLabel>
-        <Select
-          labelId="organisation"
-          id="organisationId"
-          name="organisationId"
-          label="Choose an Organisation"
-          value={inputs['organisationId'] ?? ''}
+    <div>
+      <div className="w-80 border-2 border-solid border-stone-400 rounded-lg p-5 bg-white mb-5">
+        <h1 className="text-center font-bold">Register</h1>
+        <TextField
+          label="First Name"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="text"
           onChange={handleChange}
-          error={!!inputErrors['organisationId']}
-        >
-          {Array.isArray(organisations) &&
-            organisations.map((org) => (
-              <MenuItem key={org.id} value={org.id.toString()}>
-                {org.name}
-              </MenuItem>
-            ))}
-        </Select>
-        <FormHelperText>{inputErrors['organisationId']}</FormHelperText>
-      </FormControl>
-      <TextField
-        label="Password"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="password"
-        placeholder="Please enter passowrd"
-        id="password"
-        value={inputs['password'] ?? ''}
-        onChange={handleChange}
-        error={!!inputErrors['password']}
-        helperText={inputErrors['password']}
-      />
-      <TextField
-        label="Confirm Password"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="password"
-        placeholder="Enter matching password"
-        id="passwordConfirm"
-        value={inputs['passwordConfirm'] ?? ''}
-        onChange={handleChange}
-        error={!!inputErrors['passwordConfirm']}
-        helperText={inputErrors['passwordConfirm']}
-      />
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Submit
+          value={inputs['fName'] ?? ''}
+          id="fName"
+          error={!!inputErrors['fName']}
+          helperText={inputErrors['fName']}
+        />
+        <TextField
+          label="Last Name"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="text"
+          onChange={handleChange}
+          value={inputs['lName'] ?? ''}
+          id="lName"
+          error={!!inputErrors['lName']}
+          helperText={inputErrors['lName']}
+        />
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="email"
+          placeholder="This will be your username"
+          id="email"
+          onChange={handleChange}
+          value={inputs['email'] ?? ''}
+          error={!!inputErrors['email']}
+          helperText={inputErrors['email']}
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="my-select-label">Choose an Organisation</InputLabel>
+          <Select
+            labelId="organisation"
+            id="organisationId"
+            name="organisationId"
+            label="Choose an Organisation"
+            value={inputs['organisationId'] ?? ''}
+            onChange={handleChange}
+            error={!!inputErrors['organisationId']}
+          >
+            {Array.isArray(organisations) &&
+              organisations.map((org) => (
+                <MenuItem key={org.id} value={org.id.toString()}>
+                  {org.name}
+                </MenuItem>
+              ))}
+          </Select>
+          <FormHelperText>{inputErrors['organisationId']}</FormHelperText>
+        </FormControl>
+        <TextField
+          label="Password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="password"
+          placeholder="Please enter passowrd"
+          id="password"
+          value={inputs['password'] ?? ''}
+          onChange={handleChange}
+          error={!!inputErrors['password']}
+          helperText={inputErrors['password']}
+        />
+        <TextField
+          label="Confirm Password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="password"
+          placeholder="Enter matching password"
+          id="passwordConfirm"
+          value={inputs['passwordConfirm'] ?? ''}
+          onChange={handleChange}
+          error={!!inputErrors['passwordConfirm']}
+          helperText={inputErrors['passwordConfirm']}
+        />
+        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
+          Submit
+        </Button>
+      </div>
+      <Button
+        variant="contained"
+        color="secondary"
+        className="w-80"
+        onClick={() => navigate('/login')}
+      >
+        Already joined? Login
       </Button>
     </div>
   );

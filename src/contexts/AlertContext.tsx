@@ -24,7 +24,12 @@ export const AlertProvider: FC<Props> = ({ children }) => {
   return (
     <AlertContext.Provider value={{ showAlert }}>
       {children}
-      <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
         <Alert onClose={handleClose} severity={severity} variant="filled">
           {message}
         </Alert>

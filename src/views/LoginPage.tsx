@@ -37,10 +37,15 @@ const LoginPage = () => {
       if (!response.ok) {
         const message = getErrorMessageFromStatus(response.status);
         showAlert(message, 'error');
+        return;
       }
       const result = await response.json();
       if (result.user) {
         result.user.tokenCreatedAt = Date.now();
+      }
+      if (result.user.roles.includes('UNVALIDATED')) {
+        showAlert("Your organisation moderator hasn't approved your registration yet", 'info');
+        return;
       }
       setUserDetails(result.user);
       navigate('/');
@@ -51,32 +56,42 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="w-80 border-2 border-solid border-stone-400 rounded-lg p-5 bg-white">
-      <h1 className="text-center font-bold">Sign In</h1>
-      <TextField
-        label="Email"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="email"
-        id="email"
-        onChange={handleChange}
-        value={inputs['email'] ?? ''}
-        helperText={inputErrors['email']}
-      />
-      <TextField
-        label="Password"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        type="password"
-        id="password"
-        onChange={handleChange}
-        value={inputs['password'] ?? ''}
-        helperText={inputErrors['password']}
-      />
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Login
+    <div>
+      <div className="w-80 border-2 border-solid border-stone-400 rounded-lg p-5 bg-white mb-5">
+        <h1 className="text-center font-bold">Sign In</h1>
+        <TextField
+          label="Email"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="email"
+          id="email"
+          onChange={handleChange}
+          value={inputs['email'] ?? ''}
+          helperText={inputErrors['email']}
+        />
+        <TextField
+          label="Password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          type="password"
+          id="password"
+          onChange={handleChange}
+          value={inputs['password'] ?? ''}
+          helperText={inputErrors['password']}
+        />
+        <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
+          Login
+        </Button>
+      </div>
+      <Button
+        variant="contained"
+        color="secondary"
+        className="w-80"
+        onClick={() => navigate('/register')}
+      >
+        No account? Register
       </Button>
     </div>
   );

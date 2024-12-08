@@ -4,10 +4,19 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#0D6B3C',
     },
     secondary: {
-      main: '#dc004e',
+      main: '#26A69A',
+    },
+  },
+  components: {
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: '#DC2626',
+        },
+      },
     },
   },
 });
