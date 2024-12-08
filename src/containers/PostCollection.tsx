@@ -50,7 +50,7 @@ const PostCollection: FC<Props> = ({ userId, passedType, organisationId = 0 }) =
   }, [type, showAlert, passedType, userId, organisationId]);
 
   return (
-    <div className="bg-green-50 bg-opacity-50 p-10">
+    <div className="bg-green-50 bg-opacity-50 p-3 sm:p-10">
       {posts.map((post) => (
         <PostInCollection post={post} key={post.createdAt} />
       ))}
