@@ -63,7 +63,7 @@ jobs:
             fi &&
           
             # Automatically update Nginx with Certbot
-            sudo certbot --nginx --non-interactive --agree-tos \
+            sudo certbot --nginx --nginx-server-root /etc/nginx/nginx.conf.d --non-interactive --agree-tos \
             --email joshuadancey@hotmail.com \
             -d careshare.joshuadanceywebdev.ie &&
           
