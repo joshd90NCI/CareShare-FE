@@ -18,15 +18,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Sites available to mimic more standard nginx configurations
 COPY careshare.conf /etc/nginx/sites-available/
 
-# Copy your site configuration(s) into sites-available
-COPY careshare.joshuadanceywebdev.ie.conf /etc/nginx/sites-available/
-
 # Symlink the config from sites-available to sites-enabled
-RUN ln -s /etc/nginx/sites-available/careshare.joshuadanceywebdev.ie.conf /etc/nginx/sites-enabled/
-
-# Symlink the config from sites-available to sites-enabled
-RUN ln -s /etc/nginx/sites-available/careshare.joshuadanceywebdev.ie.conf /etc/nginx/sites-enabled/
-
+RUN ln -s /etc/nginx/sites-available/careshare.conf /etc/nginx/sites-enabled/
 
 # If using Let's Encrypt inside the container (less common, but possible):
 # - You might need to install certbot and run certificate retrieval commands at runtime or entrypoint.
