@@ -95,14 +95,14 @@ const SinglePost: FC<Props> = ({ post }) => {
       <div className="flex gap-3">
         {determineCanEdit() && (
           <div className="flex flex-col justify-between p-1">
+            <button onClick={handleDelete} data-testid="delete-button">
+              <Delete className="text-red-800 hover:text-red-700 cursor-pointer" />
+            </button>
             {determineCanEdit() === 'self' && (
               <button onClick={handleEdit} data-testid="edit-button">
                 <Edit className="text-green-900 hover:text-green-800 cursor-pointer" />
               </button>
             )}
-            <button onClick={handleDelete} data-testid="delete-button">
-              <Delete className="text-red-800 hover:text-red-700 cursor-pointer" />
-            </button>
           </div>
         )}
         <div className="flex flex-col items-center text-xl">
