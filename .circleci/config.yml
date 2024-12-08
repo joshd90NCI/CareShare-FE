@@ -61,13 +61,14 @@ jobs:
             sudo apt update &&
             sudo apt install -y certbot python3-certbot-nginx;
             fi &&
-          
-            # Automatically update Nginx with Certbot
-            sudo certbot --nginx --nginx-server-root /etc/nginx/ --non-interactive --agree-tos \
+            
+            # Do a certonly update as this is alpine and lets encrypt is struggling to identify our configs to make changes automatically
+            sudo certbot certonly --nginx --non-interactive --agree-tos \
             --email joshuadancey@hotmail.com \
-            -d careshare.joshuadanceywebdev.ie &&
-          
-            # Reload Nginx
+            -d careshare.joshuadanceywebdev.ie
+    
+
+    # Reload Nginx
             sudo systemctl reload nginx
             "
 
