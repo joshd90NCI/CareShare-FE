@@ -6,6 +6,7 @@ import { ChevronLeft } from '@mui/icons-material';
 
 import { userContext } from '../contexts/UserContext.tsx';
 
+//Sidebar as part of layout
 const SideBar = () => {
   const [openForMobile, setOpenForMobile] = useState(false);
   const { setUserDetails } = useContext(userContext);
