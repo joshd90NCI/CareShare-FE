@@ -32,7 +32,6 @@ const AdminPage = () => {
   };
 
   if (!userDetails || (!isAdmin && !isModerator)) {
-    console.log('not getting let through');
     navigate('/');
     return null;
   }
@@ -89,7 +88,7 @@ const AdminPage = () => {
           <Typography>Monitor Posts</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <div className="bg-green-800">
+          <div className="bg-secondary">
             <PostCollection passedType="organisation" organisationId={parseInt(orgId)} />
           </div>
         </AccordionDetails>
