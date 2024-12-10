@@ -1,0 +1,14 @@
+# General robots.txt file for CareShare
+
+User-agent: *
+Disallow: /admin          # Prevent search engines from accessing admin pages
+Disallow: /profile        # Prevent indexing of user profiles for privacy
+
+Disallow: /post/*         # Prevent individual posts from being indexed if they're sensitive
+Disallow: /search            # Allow search results to be indexed
+Disallow: /posts/:type       # Allow collections of posts to be indexed
+Allow: /                  # Allow indexing of the landing page
+Allow: /login          #  indexing of the login page
+Allow: /register       #  indexing of the registration page
+# Sitemap
+Sitemap: https://careshare.joshuadanceywebdev.ie/sitemap.xml
