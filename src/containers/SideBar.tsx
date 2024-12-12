@@ -13,10 +13,12 @@ const SideBar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // On mobile this is expandable and collapsible
   const handleDrawerToggle = () => {
     setOpenForMobile((prev) => !prev);
   };
 
+  // We set our user context to null which will in turn wipe the token from our session storage
   const handleLogout = () => {
     setUserDetails(null);
   };
@@ -26,7 +28,7 @@ const SideBar = () => {
       <Toolbar>
         <Button>Logo</Button>
       </Toolbar>
-
+      {/*Collapsible if we are in mobile mode*/}
       {isMobile && !openForMobile && (
         <div className="text-6xl text-stone-500">
           <ChevronRightIcon

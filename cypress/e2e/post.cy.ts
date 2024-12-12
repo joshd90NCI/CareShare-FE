@@ -4,8 +4,9 @@ describe('Create Post', () => {
   it('should login and create a post', () => {
     login('BASIC');
 
+    // Find the button that says ask question and click it
     cy.contains('Ask Question').click();
-
+    // assert that the modal has popped up
     cy.contains('Create Post');
 
     // Fill out the form

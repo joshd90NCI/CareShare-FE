@@ -5,7 +5,8 @@ import { UserContextProvider } from './contexts/UserContext.tsx';
 import { AlertProvider } from './contexts/AlertContext.tsx';
 
 import './App.css';
-
+// had code splitting here through lazy load however as the site is quite light, loading all at once actually leads
+// to a better overall experience
 import AuthLayout from './views/layouts/AuthLayout.tsx';
 import RegisterPage from './views/RegisterPage.tsx';
 import LoginPage from './views/LoginPage.tsx';
@@ -17,6 +18,7 @@ import PostContainer from './containers/PostContainer.tsx';
 import ProfilePage from './views/ProfilePage.tsx';
 import AdminPage from './views/AdminPage.tsx';
 
+// Handle our routing at this point
 function App() {
   return (
     <BrowserRouter>
@@ -25,10 +27,12 @@ function App() {
           <AlertProvider>
             <Routes>
               <Route>
+                {/*Nested Routing of Auth routes*/}
                 <Route element={<AuthLayout />}>
                   <Route path="register" element={<RegisterPage />} />
                   <Route path="login" element={<LoginPage />} />
                 </Route>
+                {/*Nested Routing of Main Routes*/}
                 <Route path="/" element={<MainLayout />}>
                   <Route index element={<LandingPage />} />
                   <Route path="search" element={<SearchResults />} />

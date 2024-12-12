@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 
+// This carries out a yup validation on the object
 const validate = async (
   data: Record<string, any>,
   validationSchema: yup.ObjectSchema<any>
@@ -8,6 +9,7 @@ const validate = async (
     await validationSchema.validate(data, { abortEarly: false });
     return {};
   } catch (err) {
+    // If there are errors we iterate through them and put them onto an error object to be consumed by the calling function
     const errors: Record<string, string> = {};
     if (err instanceof yup.ValidationError) {
       err.inner.forEach((e) => {

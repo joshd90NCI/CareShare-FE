@@ -9,8 +9,12 @@ import { Button } from '@mui/material';
 
 import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
+// This is the container for holding both the post itself and all its children
 const PostContainer = () => {
+  // Derive the id from our url params
   const { id } = useParams();
+  // We memoize the options because they are an object reference that is getting rebuilt
+  // with every rerender which causes an infinite loop when passed to useEffect
   const options = useMemo(() => ({ credentials: 'include' }) as RequestInit, []);
   const { data, error, loading, fetchDataFunction } = useFetch<Post>(
     `${config.apiEndpoint}/posts/${id}`,
@@ -20,6 +24,7 @@ const PostContainer = () => {
 
   // we want to re fetch the original post after we add an answer to it
   useEffect(() => {
+    // abort controller allows us to terminate the fetch request if the page unloads
     const abortController = new AbortController();
     if (!modalDetails.openState) {
       fetchDataFunction(abortController.signal).then();
@@ -27,6 +32,7 @@ const PostContainer = () => {
     return () => abortController.abort();
   }, [modalDetails.openState, fetchDataFunction]);
 
+  // Return the error if error
   if (error) {
     return (
       <div className="w-full h-full flex items-center justify-center text-2xl">
@@ -34,7 +40,7 @@ const PostContainer = () => {
       </div>
     );
   }
-
+  // Return loading
   if (loading) {
     return (
       <div className="w-full h-full flex items-center justify-center text-2xl">
@@ -45,10 +51,12 @@ const PostContainer = () => {
 
   return (
     <section className="">
+      {/*The Parent Post*/}
       <h2 className="font-bold text-3xl mb-5 text-stone-800">{data?.title}</h2>
       <SinglePost post={data} />
       <hr className="border-t-2 border-solid border-stone-500 my-8" />
       <h3 className="font-bold text-2xl mb-5 text-stone-800">Answers</h3>
+      {/*Map through the replies*/}
       {data?.replies.map((post) => <SinglePost post={post} key={post.createdAt} />)}
       {data?.replies.length === 0 && (
         <h4 className="text-xl bg-white bg-opacity-50 p-5 rounded-md">There are no answers yet</h4>

@@ -2,6 +2,7 @@
     background-image: url("/src/assets/authBackgound.jpg");
 }
 
+/*animates our logo on page load*/
 @keyframes slideUpAndOut {
     0% {
         transform: translate(-50%,-50%);

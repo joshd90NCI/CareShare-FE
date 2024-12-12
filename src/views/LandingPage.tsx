@@ -1,6 +1,7 @@
 import PostCollection from '../containers/PostCollection.tsx';
 import careShareLogo from '../assets/careshare-logo.png';
 
+// First page that users see when logging in.  At the /
 const LandingPage = () => {
   return (
     <div className="text-center text-stone-800">
@@ -11,6 +12,7 @@ const LandingPage = () => {
       <h2 className="text-3xl mb-6 bg-white bg-opacity-50 p-2 rounded-lg">
         Connecting Care Workers
       </h2>
+      {/*Recent posts that have been posted*/}
       <PostCollection passedType="recent" />
     </div>
   );

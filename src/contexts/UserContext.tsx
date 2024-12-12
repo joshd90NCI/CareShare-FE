@@ -9,14 +9,20 @@ export const userContext = createContext<{
 
 type Props = { children: ReactNode };
 
+// Our self-contained user context.
 export const UserContextProvider: FC<Props> = ({ children }) => {
+  // Current active state
   const [userDetails, setUserDetails] = useState<User | null>(() => {
+    // Stored user is taken from sessionStorage, we get this in the callback to ensure that the user is available as soon as possible
+    // without waiting for the second render which is when the useEffect kicks into place
     const storedUser = sessionStorage.getItem('userDetails');
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       if (!('createdAt' in parsedUser)) {
         return parsedUser;
       }
+      // We want to see whether the token has expired or not.  If more time has elapsed since it was created than our expiry cut-off
+      // then we need to be returned to the login
       const timeDiff = Date.now() - parsedUser.createdAt;
       return timeDiff > config.EXPIRY_TIME_IN_SECONDS * 1000 ? null : parsedUser;
     }
@@ -24,6 +30,7 @@ export const UserContextProvider: FC<Props> = ({ children }) => {
   });
 
   useEffect(() => {
+    // Any changes to our user object should be reflected in our session storage
     if (userDetails) {
       sessionStorage.setItem('userDetails', JSON.stringify(userDetails));
     } else {

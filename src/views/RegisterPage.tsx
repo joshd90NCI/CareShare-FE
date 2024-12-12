@@ -15,47 +15,41 @@ import validateForm from '../validations/validateForm.ts';
 import { registerSchema } from '../validations/authFormValidations.ts';
 import { useNavigate } from 'react-router-dom';
 import { AlertContext } from '../contexts/AlertContext.tsx';
-import { getErrorMessageFromStatus } from '../utils.ts';
+import { genericFetch } from '../utils.ts';
 
 const RegisterPage = () => {
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [inputErrors, setInputErrors] = useState<Record<string, string>>({});
+  // memoize the options to provide a stable reference to the object which otherwise changes reference on every rerender
   const options = useMemo(() => ({}), []);
   const { data: organisations } = useFetch(`${config.apiEndpoint}/organisations`, options);
   const navigate = useNavigate();
   const { showAlert } = useContext(AlertContext);
 
+  // update our inputs through their id's and spreading them
   const handleChange = (e: ChangeEvent<any> | SelectChangeEvent) => {
     const { id, value, name } = e.target;
     setInputs((prev) => ({ ...prev, [id ?? name]: value }));
+    // Remove errors if we are changing this particular imput
     setInputErrors((prev) => ({ ...prev, [id ?? name]: '' }));
   };
 
+  // Submit the form
   const handleSubmit = async () => {
+    // validate the form first before submitting
     const validatedForm = await validateForm(inputs, registerSchema);
     if (Object.keys(validatedForm).length > 0) {
       setInputErrors(validatedForm);
       return;
     }
-    try {
-      const response = await fetch(`${config.apiEndpoint}/auth/register`, {
-        method: 'POST',
-        body: JSON.stringify(inputs),
-        headers: { 'Content-type': 'application/json' },
-      });
-      if (!response.ok) {
-        const message = getErrorMessageFromStatus(response.status);
-        showAlert(message, 'error');
-        return;
-      }
-      showAlert(
-        'You will not be able to login until your organisations moderator has approved your account'
-      );
-      navigate('/login');
-    } catch (err) {
-      const message = `Something unexpected happened: ${(err as Error).message}`;
-      showAlert(message, 'error');
-    }
+    const response = await genericFetch(
+      `${config.apiEndpoint}/auth/register`,
+      { method: 'POST', body: JSON.stringify(inputs) },
+      showAlert,
+      'You will not be able to login until your organisations moderator has approved your account'
+    );
+    if (!response.ok) return;
+    navigate('/login');
   };
 
   return (
@@ -71,7 +65,9 @@ const RegisterPage = () => {
           onChange={handleChange}
           value={inputs['fName'] ?? ''}
           id="fName"
+          // sets an error state / ui.  Double bang operators to turn into boolean
           error={!!inputErrors['fName']}
+          // actually displays the error
           helperText={inputErrors['fName']}
         />
         <TextField

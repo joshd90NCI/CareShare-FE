@@ -3,6 +3,7 @@ import { userContext } from '../contexts/UserContext.tsx';
 import ProfilePicture from '../components/ProfilePicture.tsx';
 import PostCollection from '../containers/PostCollection.tsx';
 
+// The users profile page that they can view.  Fairly straightforward just some css to style and place elements
 const ProfilePage = () => {
   const { userDetails } = useContext(userContext);
   if (!userDetails) {

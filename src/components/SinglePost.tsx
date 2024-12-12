@@ -4,27 +4,32 @@ import { FC, useContext, useEffect, useState } from 'react';
 
 import config from '../config.ts';
 import { AlertContext } from '../contexts/AlertContext.tsx';
-import { genericFetch, getErrorMessageFromStatus } from '../utils.ts';
+import { genericFetch } from '../utils.ts';
 import { userContext } from '../contexts/UserContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import { modalOpenContext } from '../contexts/ModalContext.tsx';
 
 type Props = { post: Post | undefined };
 
+// This is the container for a single post and is the primary source for interacting with a post.
+// You are directed here after clicking on a post in container
 const SinglePost: FC<Props> = ({ post }) => {
   const [voteCount, setVoteCount] = useState(post?.voteCount ?? 0);
   const [isLoading, setIsLoading] = useState(false);
+  // We can open the modal to do editing from this point
   const { setModalDetails } = useContext(modalOpenContext);
   const { showAlert } = useContext(AlertContext);
   const { userDetails } = useContext(userContext);
   const navigate = useNavigate();
 
+  // Update our vote count according to the post if it updates, so we don't use stale data
   useEffect(() => {
     if (post) {
       setVoteCount(post?.voteCount);
     }
   }, [post]);
 
+  // Whether we display the edit and delete buttons depends on ownership and permissions
   const determineCanEdit = (): boolean | 'self' => {
     // Start with the most specific first.  Only owner of a post can edit their own
     if (userDetails?.id === post?.user.id) return 'self';
@@ -35,6 +40,7 @@ const SinglePost: FC<Props> = ({ post }) => {
     );
   };
 
+  // Hit the delete endpoint and if successful navigate back to the home page
   const handleDelete = async () => {
     const result = await genericFetch(
       `/posts/${post?.id}`,
@@ -47,39 +53,33 @@ const SinglePost: FC<Props> = ({ post }) => {
     }
   };
 
+  // Open our modal to edit
   const handleEdit = () => {
     setModalDetails({ openState: true, parentId: post?.parentId, postDetails: post });
   };
 
+  // Hit our voting endpoint
   const handleVote = async (voteChangeAmount: 1 | -1) => {
     if (!post || isLoading) {
       return;
     }
     setIsLoading(true);
     const bodyObj = { userId: 1, postId: post.id, voteType: voteChangeAmount };
-    try {
-      const response = await fetch(`${config.apiEndpoint}/votes`, {
-        method: 'POST',
-        body: JSON.stringify(bodyObj),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        const message = getErrorMessageFromStatus(response.status);
-        showAlert(message, 'error');
-        return;
-      }
-      setVoteCount((prev) => prev + voteChangeAmount);
-    } catch (err) {
-      const message = `An unexpected error occurred: ${(err as Error).message}`;
-      showAlert(message, 'error');
-    } finally {
+
+    const response = await genericFetch(
+      `${config.apiEndpoint}/votes`,
+      { method: 'POST', body: JSON.stringify(bodyObj) },
+      showAlert,
+      'Voting Successful'
+    );
+    if (!response) {
       setIsLoading(false);
+      return;
     }
+    // Update our vote amount if this changes.  This is out of sync with our props data but as soon as they change they will update from the backend so will be properly updated
+    setVoteCount((prev) => prev + voteChangeAmount);
+    setIsLoading(false);
   };
-  if (post?.user.fName === 'Benny') {
-    console.log(determineCanEdit());
-  }
   if (!post) {
     return null;
   }
@@ -94,6 +94,7 @@ const SinglePost: FC<Props> = ({ post }) => {
       </div>
       <div className="flex gap-3">
         {determineCanEdit() && (
+          // Only display the edit and delete section if we have the permissions
           <div className="flex flex-col justify-between p-1">
             <button onClick={handleDelete} data-testid="delete-button">
               <Delete className="text-red-800 hover:text-red-700 cursor-pointer" />
@@ -105,6 +106,7 @@ const SinglePost: FC<Props> = ({ post }) => {
             )}
           </div>
         )}
+        {/*Voting Section*/}
         <div className="flex flex-col items-center text-xl">
           <button
             className="border-2 border-solid border-stone-500 rounded-full m-auto w-10 h-10 flex items-center justify-center"

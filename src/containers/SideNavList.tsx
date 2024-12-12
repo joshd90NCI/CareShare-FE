@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { modalOpenContext } from '../contexts/ModalContext.tsx';
 import { Button, List, ListItem, ListItemButton } from '@mui/material';
 
+// The list of items that are available in the side navbar
 const SideNavList = () => {
   const { userDetails } = useContext(userContext);
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const SideNavList = () => {
           </b>
         </p>
       )}
+      {/*Admin section only visible if you have moderator or admin role*/}
       {(userDetails?.roles?.includes('ADMIN') || userDetails?.roles?.includes('MODERATOR')) && (
         <ListItem>
           <ListItemButton

@@ -4,49 +4,50 @@ import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import config from '../config.ts';
 import { AlertContext } from '../contexts/AlertContext.tsx';
+import { genericFetch } from '../utils.ts';
 
 type Props = { user: User; setUsers: Dispatch<SetStateAction<User[]>> };
+
+//this is the user in the table of displayed users
 const UserInCollection: FC<Props> = ({ user, setUsers }) => {
   const { showAlert } = useContext(AlertContext);
   const [role, setRole] = useState(user.roles);
+
+  // Request to the backend to switch a user from UNVALIDATED to BASIC
   const handleApprove = async () => {
     if (!user.roles?.includes('UNVALIDATED')) {
       return;
     }
-    try {
-      const response = await fetch(`${config.apiEndpoint}/users/${user.id}`, {
+    const response = await genericFetch(
+      `${config.apiEndpoint}/users/${user.id}`,
+      {
         method: 'PUT',
         body: JSON.stringify({ roles: 'BASIC' }),
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (!response.ok) {
-        showAlert(`There was an Error: ${response.statusText}`, 'error');
-        return;
-      }
-      const result = await response.json();
-      setRole(result.roles);
-      showAlert(`You have successfully approved user ${user.email}`, 'success');
-    } catch (err) {
-      showAlert(`Unexpected Error occurred: ${(err as Error).message}`);
-    }
+      },
+      showAlert,
+      `You have successfully approved ${user.email}`
+    );
+    if (!response.ok || 'roles' in response) return;
+    // If we successfully changed over we can then update our UI
+    setRole(response.roles);
   };
 
+  // Delete the user
   const handleDelete = async () => {
-    try {
-      const response = await fetch(`${config.apiEndpoint}/users/${user.id}`, {
+    const response = await genericFetch(
+      `${config.apiEndpoint}/users/${user.id}`,
+      {
         method: 'DELETE',
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        showAlert(`There was an Error: ${response.statusText}`, 'error');
-        return;
-      }
-      setUsers((prev) => prev.filter((userEl) => userEl.id !== user.id));
-    } catch (err) {
-      showAlert(`Unexpected Error occurred: ${(err as Error).message}`);
-    }
+      },
+      showAlert,
+      `Successfully removed ${user.email}`
+    );
+    if (!response.ok) return;
+    // Filter out the user from the array as we got a successful deletion
+    setUsers((prev) => prev.filter((userEl) => userEl.id !== user.id));
   };
+
+  // returns a table row as its part of the users table
   return (
     <tr className="shadow">
       <td className="text-center">

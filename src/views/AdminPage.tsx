@@ -18,6 +18,7 @@ import PostCollection from '../containers/PostCollection.tsx';
 import useFetch from '../hooks/useFetch.ts';
 import config from '../config.ts';
 
+// Holds the ability to view users and approve or delete them as well as recent posts
 const AdminPage = () => {
   const navigate = useNavigate();
   const { userDetails } = useContext(userContext);
@@ -25,8 +26,10 @@ const AdminPage = () => {
   const isModerator = userDetails?.roles?.includes('MODERATOR');
   const [orgId, setOrgId] = useState('0');
   const options = useMemo(() => ({}), []);
+  // we can useFetch here as it's the default behaviour or the container to fetch the data on mount
   const { data: organisations } = useFetch(`${config.apiEndpoint}/organisations`, options);
 
+  // Our select to swap between organisations if admin
   const handleChange = async (e: SelectChangeEvent) => {
     setOrgId(e.target.value);
   };
@@ -40,6 +43,7 @@ const AdminPage = () => {
     <div>
       <div>
         <h1 className="text-2xl my-5">{isAdmin ? 'Admin Section' : 'Moderation Section'}</h1>
+        {/*We can swap between organisations if we are the admin*/}
         {isAdmin ? (
           <form>
             <FormControl fullWidth margin="normal">
@@ -53,9 +57,11 @@ const AdminPage = () => {
                 onChange={handleChange}
                 className="bg-white"
               >
+                {/*Default option*/}
                 <MenuItem key={0} value={'0'}>
                   Your Organisation
                 </MenuItem>
+                {/*Map through the rest of the organisations*/}
                 {Array.isArray(organisations) &&
                   organisations.map((org) => (
                     <MenuItem key={org.id} value={org.id.toString()}>
@@ -67,7 +73,9 @@ const AdminPage = () => {
           </form>
         ) : null}
       </div>
+      {/*Set the rest of the context up in an expandable accordion survey*/}
       <Accordion>
+        {/*Users*/}
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="approve-users-content"
@@ -80,6 +88,7 @@ const AdminPage = () => {
         </AccordionDetails>
       </Accordion>
       <Accordion>
+        {/*Posts*/}
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="monitor-posts-content"

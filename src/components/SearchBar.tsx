@@ -4,6 +4,7 @@ import { searchContext } from '../contexts/SearchContext.tsx';
 import useDebounce from '../hooks/useDebounce.ts';
 import { useNavigate } from 'react-router-dom';
 
+// Declare our setSearch as this will need to be debounced.  This will be a stable reference
 const handleSearch = (
   e: ChangeEvent<HTMLInputElement>,
   setSearch: Dispatch<SetStateAction<string>>
@@ -12,7 +13,9 @@ const handleSearch = (
   setSearch(e.target.value);
 };
 
+// This is the search bar embedded in the nav bar
 const SearchBar = () => {
+  // Grab our setSearch context value so that we can update this to be accessible by the search container
   const { setSearch } = useContext(searchContext);
   const navigate = useNavigate();
 
@@ -33,6 +36,7 @@ const SearchBar = () => {
         className="rounded-md min-w-24"
         onChange={debouncedSearch}
         onFocus={() => navigate('/search')}
+        // Material Ui styling
         sx={{
           backgroundColor: 'white',
           width: '33%',

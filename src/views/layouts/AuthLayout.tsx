@@ -3,6 +3,7 @@ import logo from '../../assets/careshare-logo.png';
 
 import '../views.css';
 
+// Reusable layout.
 const AuthLayout = () => {
   return (
     <section className="w-full h-dvh flex items-center justify-start flex-col main-bg relative">
@@ -12,7 +13,8 @@ const AuthLayout = () => {
         alt="Care Share Logo"
         className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 logo-slide-up w-48 h-48 z-20"
       />
-      <Outlet />
+      {/*This will be filled in by whatever content is at the url endpoint in react router dom*/}
+      <Outlet />s
     </section>
   );
 };

@@ -1,4 +1,7 @@
+// This holds our end-to-end testing done by cypress
+
 describe('Login Page', () => {
+  // Ensure that the page comes up correctly
   it('should display the login page with the text "Login"', () => {
     // Visit the login page
     cy.visit('http://localhost:5173/login');
@@ -14,6 +17,7 @@ describe('Login Page', () => {
     cy.get('#email').type(Cypress.env('basicUsername'));
     cy.get('#password').type(Cypress.env('password'));
 
+    // Find an element that says Login and click it
     cy.contains('Login').click();
 
     cy.url().should('eq', 'http://localhost:5173/');
@@ -21,6 +25,7 @@ describe('Login Page', () => {
   });
 });
 
+// This is a function that returns a series of commands to Log in to the site
 export const login = (userRole: 'ADMIN' | 'BASIC') => {
   const username = userRole === 'ADMIN' ? Cypress.env('username') : Cypress.env('basicUsername');
   const password = Cypress.env('password');

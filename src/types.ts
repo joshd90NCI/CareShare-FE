@@ -1,5 +1,7 @@
 import { AlertProps } from '@mui/material';
 
+// We set our types that will be used throughout the project
+
 export type User = {
   id: number;
   email: string;
