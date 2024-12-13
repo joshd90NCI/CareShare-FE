@@ -33,7 +33,7 @@ const LoginPage = () => {
       { method: 'POST', body: JSON.stringify(inputs) },
       showAlert
     );
-    if (!response.ok) return;
+    if (!response) return;
 
     if (response.user) {
       response.user.tokenCreatedAt = Date.now();
