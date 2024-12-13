@@ -2,7 +2,6 @@ import { Button, TextField } from '@mui/material';
 import { ChangeEvent, useContext, useState } from 'react';
 import validateForm from '../validations/validateForm.ts';
 import { loginSchema } from '../validations/authFormValidations.ts';
-import config from '../config.ts';
 import { useNavigate } from 'react-router-dom';
 import { userContext } from '../contexts/UserContext.tsx';
 import { genericFetch } from '../utils.ts';
@@ -22,6 +21,7 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async () => {
+    // Validate our form before sending to the backend
     const validationErrors = await validateForm(inputs, loginSchema);
     if (Object.keys(validationErrors).length > 0) {
       setInputErrors(validationErrors);
@@ -29,7 +29,7 @@ const LoginPage = () => {
     }
 
     const response = await genericFetch(
-      `${config.apiEndpoint}/auth/login`,
+      `/auth/login`,
       { method: 'POST', body: JSON.stringify(inputs) },
       showAlert
     );
@@ -50,7 +50,7 @@ const LoginPage = () => {
     <div>
       <div className="w-80 border-2 border-solid border-stone-400 rounded-lg p-5 bg-white mb-5">
         <h1 className="text-center font-bold">Sign In</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <TextField
             label="Email"
             variant="outlined"

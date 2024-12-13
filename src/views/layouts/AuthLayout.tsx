@@ -14,7 +14,7 @@ const AuthLayout = () => {
         className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 logo-slide-up w-48 h-48 z-20"
       />
       {/*This will be filled in by whatever content is at the url endpoint in react router dom*/}
-      <Outlet />s
+      <Outlet />
     </section>
   );
 };

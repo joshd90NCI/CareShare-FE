@@ -2,7 +2,7 @@ import { User } from '../types.ts';
 import { Dispatch, FC, SetStateAction, useContext, useState } from 'react';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import config from '../config.ts';
+
 import { AlertContext } from '../contexts/AlertContext.tsx';
 import { genericFetch } from '../utils.ts';
 
@@ -19,7 +19,7 @@ const UserInCollection: FC<Props> = ({ user, setUsers }) => {
       return;
     }
     const response = await genericFetch(
-      `${config.apiEndpoint}/users/${user.id}`,
+      `/users/${user.id}`,
       {
         method: 'PUT',
         body: JSON.stringify({ roles: 'BASIC' }),
@@ -35,7 +35,7 @@ const UserInCollection: FC<Props> = ({ user, setUsers }) => {
   // Delete the user
   const handleDelete = async () => {
     const response = await genericFetch(
-      `${config.apiEndpoint}/users/${user.id}`,
+      `/users/${user.id}`,
       {
         method: 'DELETE',
       },

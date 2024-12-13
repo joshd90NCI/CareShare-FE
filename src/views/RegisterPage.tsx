@@ -43,7 +43,7 @@ const RegisterPage = () => {
       return;
     }
     const response = await genericFetch(
-      `${config.apiEndpoint}/auth/register`,
+      `/auth/register`,
       { method: 'POST', body: JSON.stringify(inputs) },
       showAlert,
       'You will not be able to login until your organisations moderator has approved your account'

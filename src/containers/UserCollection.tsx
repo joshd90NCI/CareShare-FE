@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import config from '../config.ts';
+
 import { AlertContext } from '../contexts/AlertContext.tsx';
 import UserInCollection from './UserInCollection.tsx';
 import { User } from '../types.ts';
@@ -14,7 +14,7 @@ const UserCollection: FC<Props> = ({ organisation, role }) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const url = `${config.apiEndpoint}/users?${organisation ? 'organisation=' + organisation : ''}${role && organisation ? '&' : ''}${role ? 'role=' + role : ''}`;
+      const url = `/users?${organisation ? 'organisation=' + organisation : ''}${role && organisation ? '&' : ''}${role ? 'role=' + role : ''}`;
       const response = await genericFetch(url, {}, showAlert);
       if (!response) return;
       setUsers(response);

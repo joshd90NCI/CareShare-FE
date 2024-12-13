@@ -2,7 +2,6 @@ import { ExpandLessOutlined, ExpandMoreOutlined, Edit, Delete } from '@mui/icons
 import { Post } from '../types.ts';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import config from '../config.ts';
 import { AlertContext } from '../contexts/AlertContext.tsx';
 import { genericFetch } from '../utils.ts';
 import { userContext } from '../contexts/UserContext.tsx';
@@ -67,7 +66,7 @@ const SinglePost: FC<Props> = ({ post }) => {
     const bodyObj = { userId: 1, postId: post.id, voteType: voteChangeAmount };
 
     const response = await genericFetch(
-      `${config.apiEndpoint}/votes`,
+      `/votes`,
       { method: 'POST', body: JSON.stringify(bodyObj) },
       showAlert,
       'Voting Successful'

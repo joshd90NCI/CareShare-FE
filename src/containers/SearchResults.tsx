@@ -2,7 +2,7 @@ import PostInCollection from '../components/PostInCollection.tsx';
 import { useContext, useEffect, useState } from 'react';
 import { Post } from '../types.ts';
 import { searchContext } from '../contexts/SearchContext.tsx';
-import config from '../config.ts';
+
 import { genericFetch } from '../utils.ts';
 import { AlertContext } from '../contexts/AlertContext.tsx';
 
@@ -19,11 +19,7 @@ const SearchResults = () => {
     const fetchSearch = async () => {
       // we need to make sure that spaces etc. don't mess up our query
       const encodedSearch = encodeURIComponent(search);
-      const response = await genericFetch(
-        `${config.apiEndpoint}/posts/search?term=${encodedSearch}`,
-        {},
-        showAlert
-      );
+      const response = await genericFetch(`/posts/search?term=${encodedSearch}`, {}, showAlert);
       if (!response) return;
       // Type check our response and set the posts per that response
       if (Array.isArray(response)) {

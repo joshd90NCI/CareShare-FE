@@ -1,7 +1,6 @@
 import PostInCollection from '../components/PostInCollection.tsx';
 import { FC, useContext, useEffect, useState } from 'react';
 
-import config from '../config.ts';
 import { Post } from '../types.ts';
 import { useParams } from 'react-router-dom';
 import { AlertContext } from '../contexts/AlertContext.tsx';
@@ -23,10 +22,10 @@ const PostCollection: FC<Props> = ({ userId, passedType, organisationId = 0 }) =
   // We use a url object to map the correct endpoint to the prop as a lookup.  These params will get passed to our fetch function
   useEffect(() => {
     const urlObj: Record<string, string> = {
-      trending: `${config.apiEndpoint}/posts/trending`,
-      recent: `${config.apiEndpoint}/posts/recent?pageNumber=0&pageSize=10`,
-      userPosts: `${config.apiEndpoint}/posts/user/${userId}`,
-      organisation: `${config.apiEndpoint}/posts/organisation/${organisationId}`,
+      trending: `/posts/trending`,
+      recent: `/posts/recent?pageNumber=0&pageSize=10`,
+      userPosts: `/posts/user/${userId}`,
+      organisation: `/posts/organisation/${organisationId}`,
     };
     const typeToUse = userId ? 'userPosts' : (passedType ?? type);
     const url = urlObj[typeToUse ?? ''];
